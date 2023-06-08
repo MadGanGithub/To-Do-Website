@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
 import {auth} from "../config/firebase.js"
+import { useNavigate } from 'react-router-dom';
 
 export const LogContext = createContext();
 
 export const LogProvider = ({ children }) => {
   const [logged,setLogged] = useState(null);
+  const navigate=useNavigate()
   console.log(logged)
 
   useEffect(() => {
@@ -16,6 +18,7 @@ export const LogProvider = ({ children }) => {
       } else {
         // User is signed out
         setLogged(null);
+        navigate("/signin")
       }
     });
 

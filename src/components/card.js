@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { getDatabase, ref, onValue, remove } from 'firebase/database';
+import { getDatabase, ref, onValue, remove, update } from 'firebase/database';
 import { app } from '../config/firebase.js';
 
 
-const Card = ({id,title,description,date}) => {
+const Card = ({id,title,description,date,status}) => {
       const navigate=useNavigate()
       const [data, setData] = useState(null);
       const database = getDatabase(app);
+      const nodeRef = ref(database, `users/${id}`);
+
       
 
       const handleEdit=()=>{
@@ -26,6 +28,27 @@ const Card = ({id,title,description,date}) => {
         });
 
     }
+
+    const handleCheck = (event) => {
+        const checked = event.target.checked;
+    
+        try {
+          // Define the updated data
+          const updatedData = {
+            status: checked,
+          };
+    
+          update(nodeRef, updatedData)
+            .then(() => {
+              console.log('Updated Status Successfully');
+            })
+            .catch((error) => {
+              console.error('Error updating data:', error);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
       useEffect(() => {
         const dataRef = ref(database, 'users');
@@ -52,6 +75,7 @@ const Card = ({id,title,description,date}) => {
           <h5 className="card-title">{title}</h5>
           <p className="card-text"> {description}</p>
           <p className="card-text"> {date}</p>
+          <input type='checkbox' checked={status} onChange={handleCheck}/>
           <a onClick={handleEdit} className="btn">Edit</a>
           <br></br>
           <a onClick={() => handleDelete(id)} className="btn">Delete</a>

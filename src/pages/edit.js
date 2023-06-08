@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getDatabase, onValue, ref, update } from 'firebase/database';
 import { app } from '../config/firebase.js';
-import { useParams} from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
+
 
 const Edit = () => {
     const{id}=useParams()
@@ -11,6 +12,7 @@ const Edit = () => {
     const [title, setTitle] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [description, setDescription] = useState("");
+    const navigate=useNavigate()
 
     const handleSubmit=(event)=>{
         event.preventDefault()
@@ -26,6 +28,7 @@ const Edit = () => {
         update(nodeRef, updatedData)
         .then(() => {
             console.log('Data updated successfully');
+            navigate('/')
         })
         .catch((error) => {
             console.error('Error updating data:', error);

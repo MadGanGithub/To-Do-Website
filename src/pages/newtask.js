@@ -4,13 +4,14 @@ import { getDatabase, ref, push, set } from 'firebase/database';
 import { LogContext } from '../components/logcontext.js';
 import { useNavigate } from 'react-router-dom';
 
-function writeUserData(userId,title,description,duedate,currentTime) {
+function writeUserData(userId,title,description,duedate,currentTime,status) {
     const db = getDatabase();
     set(ref(db, 'users/' + userId+currentTime), {
       id:userId+currentTime,
       title:title,
       description:description,
-      duedate:duedate
+      duedate:duedate,
+      status:status
     });
   }
 
@@ -20,6 +21,7 @@ const Newtask = () => {
   const [description, setDescription] = useState('');
   const {logged,setLogged}=useContext(LogContext)
   const currentTime = new Date().getTime();
+  const[status,setStatus]=useState(false)
 
   const navigate=useNavigate()
   const database = getDatabase(app);
@@ -28,7 +30,7 @@ const handleSubmit = async (event) => {
   event.preventDefault();
   try {
     console.log(dueDate);
-    writeUserData(logged.uid,title,description,dueDate,currentTime)
+    writeUserData(logged.uid,title,description,dueDate,currentTime,status)
     
     // Reset form fields
     setTitle('');
