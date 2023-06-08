@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/home.js";
+import SignIn from "./pages/signin.js"
+import SignUp from "./pages/signup.js"
+import Newtask from "./pages/newtask.js";
+import {LogProvider} from "./components/logcontext.js";
+import Edit from "./pages/edit.js"
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <>
+  <LogProvider>
+    <Routes>
+      <Route path="/" element={<Home/>}/>
+      <Route path="/signin" element={<SignIn/>}/>
+      <Route path="/signup" element={<SignUp/>}/>
+      <Route path="/new" element={<Newtask/>}/>
+      <Route path="/edit/:id" element={<Edit/>}/>
+    </Routes>
+    </LogProvider>
+  </>
   );
 }
 
