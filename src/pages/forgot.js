@@ -1,8 +1,8 @@
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { app,auth } from '../config/firebase.js';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer,toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Forgot = () => {
@@ -10,13 +10,10 @@ const Forgot = () => {
     const navigate=useNavigate()
 
     useEffect(() => {
-      // Listen for authentication state changes
       const unsubscribe = auth.onAuthStateChanged((user) => {
         if (user) {
-          // User is signed in
           navigate("/")
         } else {
-          // User is signed out
           console.log("Logged out")
         }
       });

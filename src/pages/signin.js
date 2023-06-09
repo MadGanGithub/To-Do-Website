@@ -13,13 +13,10 @@ const Signin = () => {
 
 
   useEffect(() => {
-    // Listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in
         navigate('/')
       } else {
-        // User is signed out
         console.log("Logged out")
       }
     });
@@ -35,15 +32,11 @@ const Signin = () => {
     try{
     await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
-      // setLogged(userCredential)
       const user = userCredential.user;
-      console.log(user)
       toast.success("Signedin Successfully")
     })
     }catch(error){
-      const errorMessage = error.message;
-      console.log(errorMessage)
+      console.log(error)
       toast.warning("Email or password is wrong")
     };
 

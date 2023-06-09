@@ -4,7 +4,7 @@ import { getDatabase, ref, onValue, remove, update } from 'firebase/database';
 import { app } from '../config/firebase.js';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { ToastContainer,toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Card = ({id,title,description,date,status}) => {
@@ -34,7 +34,6 @@ const Card = ({id,title,description,date,status}) => {
         const checked = event.target.checked;
     
         try {
-          // Define the updated data
           const updatedData = {
             status: checked,
           };
@@ -44,7 +43,7 @@ const Card = ({id,title,description,date,status}) => {
               console.log('Updated Status Successfully');
             })
             .catch((error) => {
-              console.error('Error updating data:', error);
+              console.log(error)
             });
         } catch (error) {
           console.log(error);
@@ -57,9 +56,7 @@ const Card = ({id,title,description,date,status}) => {
         const fetchData = () => {
           onValue(dataRef, (snapshot) => {
             const data = snapshot.val();
-            console.log(data)
             setData(data);
-            console.log('Data retrieved from the database:', data);
           }, (error) => {
             console.error('Error reading data:', error);
           });

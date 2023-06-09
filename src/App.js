@@ -3,7 +3,6 @@ import Home from "./pages/home.js";
 import SignIn from "./pages/signin.js"
 import SignUp from "./pages/signup.js"
 import Newtask from "./pages/newtask.js";
-import {LogProvider} from "./components/logcontext.js";
 import Edit from "./pages/edit.js"
 import Forgot from "./pages/forgot.js"
 

@@ -13,13 +13,10 @@ const Signup = () => {
   const navigate=useNavigate()
 
   useEffect(() => {
-    // Listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in
         navigate("/")
       } else {
-        // User is signed out
         console.log("Logged out")
       }
     });
@@ -34,8 +31,6 @@ const Signup = () => {
     try{
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-
-
         updateProfile(auth.currentUser, {
           displayName: name
           
@@ -45,14 +40,10 @@ const Signup = () => {
               console.log(error)
           });
           
-        console.log(userCredential)
         const user = userCredential.user;
-        console.log('User signed up:', user.uid);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Signup error:', errorCode, errorMessage);
+        console.log(error)
       });
     }catch(error){
       console.log(error)

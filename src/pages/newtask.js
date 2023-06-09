@@ -29,14 +29,11 @@ const Newtask = () => {
   const database = getDatabase(app);
 
   useEffect(() => {
-    // Listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in
         console.log("Logged in")
         setLogged(user)
       } else {
-        // User is signed out
         navigate("/signin")
       }
     });
@@ -51,7 +48,6 @@ const handleSubmit = async (event) => {
     console.log(dueDate);
     writeUserData(logged.uid,title,description,dueDate,currentTime,status)
     
-    // Reset form fields
     setTitle('');
     setDueDate('');
     setDescription('');

@@ -3,7 +3,7 @@ import { getDatabase, onValue, ref, update } from 'firebase/database';
 import { app } from '../config/firebase.js';
 import { useNavigate, useParams} from 'react-router-dom';
 import {auth } from "../config/firebase.js"
-import { ToastContainer,toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Edit = () => {
@@ -17,13 +17,10 @@ const Edit = () => {
     const navigate=useNavigate()
 
     useEffect(() => {
-      // Listen for authentication state changes
       const unsubscribe = auth.onAuthStateChanged((user) => {
         if (user) {
-          // User is signed in
           console.log("Logged in")
         } else {
-          // User is signed out
           navigate("/signin")
         }
       });
@@ -36,7 +33,6 @@ const Edit = () => {
         event.preventDefault()
 
         try{
-        // Define the updated data
         const updatedData = {
             title: title,
             description: description,

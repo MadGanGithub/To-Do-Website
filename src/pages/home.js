@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.js";
 import ListViewer from "../components/ListViewer.js";
-import { getAuth, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { app,auth} from '../config/firebase.js';
 import "./home.css"
 import { useEffect, useState } from "react";
-import { ToastContainer,toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
@@ -27,14 +27,10 @@ function Home() {
   };
 
   useEffect(() => {
-    // Listen for authentication state changes
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in
         setLogged(user.displayName)
-        console.log(user.displayName)
       } else {
-        // User is signed out
         navigate("/signin")
       }
     });

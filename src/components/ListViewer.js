@@ -21,9 +21,7 @@ const ListViewer = () => {
     const fetchData = () => {
       onValue(dataRef, (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         setData(data);
-        console.log('Data retrieved from the database:', data);
       }, (error) => {
         console.error('Error reading data:', error);
       });
