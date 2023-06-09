@@ -1,16 +1,33 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {auth} from "../config/firebase.js"
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { LogContext } from '../components/logcontext.js';
-
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signin = () => {
 
   const[email,setEmail]=useState("")
   const[password,setPassword]=useState("")
-  const {logged,setLogged}=useContext(LogContext)
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+        navigate('/')
+      } else {
+        // User is signed out
+        console.log("Logged out")
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
 
   const signIn=async(e)=>{
 
@@ -19,13 +36,15 @@ const Signin = () => {
     await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in 
-      setLogged(userCredential)
+      // setLogged(userCredential)
       const user = userCredential.user;
       console.log(user)
+      toast.success("Signedin Successfully")
     })
     }catch(error){
       const errorMessage = error.message;
       console.log(errorMessage)
+      toast.warning("Email or password is wrong")
     };
 
     navigate("/")
@@ -33,28 +52,29 @@ const Signin = () => {
 
 
   return (
-          <div className="container" style={{marginLeft:"30%"}}>
-      <div className="card shadow" style={{textAlign:"center",width:"40%"}}>
-      <div className="card-body">
+          <div className="container" style={{marginLeft:"20%",marginTop:120,borderRadius:60}}>
+      <div className="card shadow" style={{textAlign:"center",width:400}}>
+      <div className="card-body" style={{width:400}}>
        <h5 className="card-title">Log in </h5>
           <form onSubmit={signIn}>
               <div className="input-group">
-                <div className="input-group-text">Email:</div>
+                <div className="input-group-text" style={{backgroundColor:"#9ACD32"}}>Email:</div>
                 <input className="form-control" type="email" id="email" placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
 
               </div>
               <br></br>
               <div className="input-group">
-                <div className="input-group-text">Password:</div>
+                <div className="input-group-text" style={{backgroundColor:"#9ACD32"}}>Password:</div>
                 <input className="form-control" type="password" id="password" placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
               </div>
                 <br></br>
-                <button type="submit" className="btn btn-primary" style={{width:"100%"}} value="SignIn">SignIn</button> 
+                <button type="submit" className="btn" style={{width:"100%",backgroundColor:"#9ACD32"}} value="SignIn">SignIn</button> 
           </form>
           <br></br>
           <div>
-          New to Xometry? <a href="/signup">Join Now</a>
+          New to TO-DO? <a href="/signup" style={{color:"#9ACD32"}}>Join Now</a>
           </div>
+          <a href='/forgot' style={{color:"#9ACD32"}}>Forgot Password</a>
           </div>
       </div>
     </div>

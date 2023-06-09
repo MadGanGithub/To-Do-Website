@@ -44,27 +44,39 @@ const ListViewer = () => {
 
   return (
     <div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="ongoing"
-            checked={selectedOption === 'ongoing'}
-            onChange={handleOptionChange}
-          />
-          On-Going
-        </label>
+<div className="radio-buttons" style={{marginLeft:10}}>
+  <div className="form-check form-check-inline">
+    <input
+      className="form-check-input"
+      type="radio"
+      value="ongoing"
+      checked={selectedOption === 'ongoing'}
+      onChange={handleOptionChange}
+      id="ongoingRadio"
+      style={{ backgroundColor: '#9ACD32', color: 'white' }}
+    />
+    <label className="form-check-label" htmlFor="ongoingRadio">
+      On-Going
+    </label>
+  </div>
 
-        <label>
-          <input
-            type="radio"
-            value="completed"
-            checked={selectedOption === 'completed'}
-            onChange={handleOptionChange}
-          />
-          Completed
-        </label>
-      </div>
+  <div className="form-check form-check-inline">
+    <input
+      className="form-check-input"
+      type="radio"
+      value="completed"
+      checked={selectedOption === 'completed'}
+      onChange={handleOptionChange}
+      id="completedRadio"
+      style={{ backgroundColor: '#9ACD32', color: 'white' }}
+    />
+    <label className="form-check-label" htmlFor="completedRadio">
+      Completed
+    </label>
+  </div>
+</div>
+
+
 
       {filteredData && filteredData.map(([key, item]) => (
         <div key={key}>

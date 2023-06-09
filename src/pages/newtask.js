@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import {app} from "../config/firebase.js"
 import { getDatabase, ref, push, set } from 'firebase/database';
-import { LogContext } from '../components/logcontext.js';
 import { useNavigate } from 'react-router-dom';
+import {auth} from "../config/firebase.js"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function writeUserData(userId,title,description,duedate,currentTime,status) {
     const db = getDatabase();
@@ -19,12 +21,29 @@ const Newtask = () => {
   const [title, setTitle] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [description, setDescription] = useState('');
-  const {logged,setLogged}=useContext(LogContext)
+  const [logged,setLogged]=useState(null)
   const currentTime = new Date().getTime();
   const[status,setStatus]=useState(false)
 
   const navigate=useNavigate()
   const database = getDatabase(app);
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+        console.log("Logged in")
+        setLogged(user)
+      } else {
+        // User is signed out
+        navigate("/signin")
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -36,7 +55,7 @@ const handleSubmit = async (event) => {
     setTitle('');
     setDueDate('');
     setDescription('');
-    alert("User created successfully")
+    toast.success("Task created successfully")
     navigate("/")
 
   } catch (error) {
@@ -46,38 +65,37 @@ const handleSubmit = async (event) => {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="dueDate">Due Date:</label>
-        <input
-          type="date"
-          id="dueDate"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        ></textarea>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+              <div className="container" style={{marginLeft:"20%",marginTop:120,borderRadius:100}}>
+              <div className="card shadow" style={{textAlign:"center",width:400}}>
+              <div className="card-body" style={{width:400}}>
+               <h5 className="card-title">New Task</h5>
+              
+               <form onSubmit={handleSubmit}>
+                  <div className="input-group">
+                    <div className="input-group-text" style={{backgroundColor:"#9ACD32"}}>Title:</div>
+                    <input className="form-control" type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required/>
+                  </div>
+                  <br></br>
+                  <div className="input-group">
+                    <div className="input-group-text" style={{backgroundColor:"#9ACD32"}}>Due Date:</div>
+                    <input className="form-control" type="date" id="dueDate" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required/>
+                  </div>
+                  <br></br>
+                  <div class="input-group">
+                  <div className="input-group-text" style={{backgroundColor:"#9ACD32"}}>Description:</div>
+                    <textarea class="form-control" aria-label="Textarea" id="description" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+                  </div>
+        
+                  <br></br>
+                  <button type="submit" className="btn" style={{width:"100%",backgroundColor:"#9ACD32"}}>Create</button> 
+                </form>
+            
+        
+            </div>
+            </div>
+            </div>
+
+    
   );
 };
 
